@@ -200,7 +200,7 @@ function Navbar() {
             columnGap="20px"
             zIndex="2"
           >
-            <IconButton
+            {/* <IconButton
               ref={el => { navOption0 = el; }}
               sx={{
                 color: "#8f8f8f",
@@ -210,7 +210,7 @@ function Navbar() {
               }}
             >
               <Search />
-            </IconButton>
+            </IconButton> */}
 
             {/* Admin Login Icon
             <IconButton
