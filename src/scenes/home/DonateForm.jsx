@@ -142,7 +142,7 @@ const DonateForm = () => {
 
   return (
     <Box>
-      <Typography variant="h4">Donate to NGOs</Typography>
+      <Typography variant="h4">-: Donate :-</Typography>
       <form>
         <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
           <InputLabel>Donation Type</InputLabel>
@@ -175,7 +175,7 @@ const DonateForm = () => {
           </>
         )}
 
-        <TextField
+        {/* <TextField
           label="Donation Amount"
           variant="outlined"
           fullWidth
@@ -183,10 +183,11 @@ const DonateForm = () => {
           onChange={handleDonationAmountChange}
           margin="normal"
           style={{ marginTop: '20px' }}
-        />
+        /> */}
 
         <TextField
-          label="Your Name"
+          label="Is there any Special Occasion when you have brought it ?
+          Ex-Like Anniversary "
           variant="outlined"
           fullWidth
           value={donorName}
@@ -195,12 +196,7 @@ const DonateForm = () => {
           style={{ marginTop: '20px' }}
         />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleDonorPhotoChange}
-          style={{ marginTop: '20px' }}
-        />
+       
 
         <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
           <InputLabel>Select NGO</InputLabel>
@@ -215,15 +211,33 @@ const DonateForm = () => {
           </Select>
         </FormControl>
 
-        <TextField
-          label="Name of Product"
-          variant="outlined"
-          fullWidth
-          value={productName}
-          onChange={handleProductNameChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
+        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+          <InputLabel>Select Brand</InputLabel>
+          <Select
+            value={selectedBrand}
+            onChange={handleBrandOptionsChange}
+            label="Select Brand"
+          >
+            {topWatchBrands.map((brand, index) => (
+              <MenuItem key={index} value={brand}>
+                {brand}
+              </MenuItem>
+            ))}
+            <MenuItem value="Other">Other</MenuItem>
+          </Select>
+        </FormControl>
+
+        {showOtherBrand && (
+          <TextField
+            label="Other Brand Name"
+            variant="outlined"
+            fullWidth
+            value={otherBrand}
+            onChange={handleOtherBrandChange}
+            margin="normal"
+            style={{ marginTop: '10px' }}
+          />
+        )}
 
         <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
           <InputLabel>Watch Type</InputLabel>
@@ -235,12 +249,24 @@ const DonateForm = () => {
             <MenuItem value="analog">Analog</MenuItem>
             <MenuItem value="digital">Digital</MenuItem>
             <MenuItem value="smart">Smart Watch</MenuItem>
+            <MenuItem value="smart">Automatic Watch</MenuItem>
+            <MenuItem value="smart">Mechanical Watch</MenuItem>
             {/* Add more watch type options as needed */}
           </Select>
         </FormControl>
 
         <TextField
-          label="Year of Watch"
+          label="Name of Product"
+          variant="outlined"
+          fullWidth
+          value={productName}
+          onChange={handleProductNameChange}
+          margin="normal"
+          style={{ marginTop: '20px' }}
+        />
+
+        <TextField
+          label="Year of Manufacturing"
           variant="outlined"
           fullWidth
           value={watchYear}
@@ -276,6 +302,13 @@ const DonateForm = () => {
             style={{ marginTop: '10px' }}
           />
         )}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleDonorPhotoChange}
+          style={{ marginTop: '20px' }}
+        />
 
         <Button
           variant="contained"

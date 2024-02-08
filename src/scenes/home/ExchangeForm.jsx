@@ -1,4 +1,3 @@
-// ExchangeForm.jsx
 import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -41,6 +40,7 @@ const ExchangeForm = () => {
   const [otherBrand, setOtherBrand] = useState('');
   const [watchCondition, setWatchCondition] = useState('');
   const [watchPhoto, setWatchPhoto] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false); 
 
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
@@ -102,6 +102,9 @@ const ExchangeForm = () => {
   
       const result = await response.json();
       console.log(result);
+
+      // Set formSubmitted to true to hide the form
+      setFormSubmitted(true);
   
       // Reset the form after submission
       setProductName('');
@@ -120,104 +123,120 @@ const ExchangeForm = () => {
   return (
     <Box>
       <Typography variant="h4">Exchange Your Watch</Typography>
-      <form>
-        <TextField
-          label="Name of Product"
-          variant="outlined"
-          fullWidth
-          value={productName}
-          onChange={handleProductNameChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
+      {!formSubmitted && (
+        <form>
+          <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Watch Type</InputLabel>
+            <Select
+              value={watchType}
+              onChange={handleWatchTypeChange}
+              label="Watch Type"
+            >
+              <MenuItem value="analog">Analog</MenuItem>
+              <MenuItem value="digital">Digital</MenuItem>
+              <MenuItem value="smart">Smart Watch</MenuItem>
+              <MenuItem value="smart">Automatic Watch</MenuItem>
+              <MenuItem value="smart">Mechanical Watch</MenuItem>
+              
+              {/* Add more watch type options as needed */}
+            </Select>
+          </FormControl>
 
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Watch Type</InputLabel>
-          <Select
-            value={watchType}
-            onChange={handleWatchTypeChange}
-            label="Watch Type"
-          >
-            <MenuItem value="analog">Analog</MenuItem>
-            <MenuItem value="digital">Digital</MenuItem>
-            <MenuItem value="smart">Smart Watch</MenuItem>
-            {/* Add more watch type options as needed */}
-          </Select>
-        </FormControl>
-
-        <TextField
-          label="Year of Watch"
-          variant="outlined"
-          fullWidth
-          value={watchYear}
-          onChange={handleWatchYearChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
-
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Watch Brand</InputLabel>
-          <Select
-            value={watchBrand}
-            onChange={handleWatchBrandChange}
-            label="Watch Brand"
-          >
-            {topWatchBrands.map((brand, index) => (
-              <MenuItem key={index} value={brand}>
-                {brand}
-              </MenuItem>
-            ))}
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-        </FormControl>
-
-        {showOtherBrand && (
           <TextField
-            label="Other Brand Name"
+            label="Year of Manufacturing"
             variant="outlined"
             fullWidth
-            value={otherBrand}
-            onChange={handleOtherBrandChange}
+            value={watchYear}
+            onChange={handleWatchYearChange}
             margin="normal"
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: '20px' }}
           />
-        )}
 
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Watch Condition</InputLabel>
-          <Select
-            value={watchCondition}
-            onChange={handleWatchConditionChange}
-            label="Watch Condition"
+          <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Watch Brand</InputLabel>
+            <Select
+              value={watchBrand}
+              onChange={handleWatchBrandChange}
+              label="Watch Brand"
+            >
+              {topWatchBrands.map((brand, index) => (
+                <MenuItem key={index} value={brand}>
+                  {brand}
+                </MenuItem>
+              ))}
+              <MenuItem value="Other">Other</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Name of Product"
+            variant="outlined"
+            fullWidth
+            value={productName}
+            onChange={handleProductNameChange}
+            margin="normal"
+            style={{ marginTop: '20px' }}
+          />
+
+          {showOtherBrand && (
+            <TextField
+              label="Other Brand Name"
+              variant="outlined"
+              fullWidth
+              value={otherBrand}
+              onChange={handleOtherBrandChange}
+              margin="normal"
+              style={{ marginTop: '10px' }}
+            />
+          )}
+
+          <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Watch Condition</InputLabel>
+            <Select
+              value={watchCondition}
+              onChange={handleWatchConditionChange}
+              label="Watch Condition"
+            >
+              {/* <MenuItem value="new">New</MenuItem> */}
+              <MenuItem value="used">Used</MenuItem>
+              <MenuItem value="likeNew">Like New</MenuItem>
+              <MenuItem value="likeNew">Few Scratch</MenuItem>
+              <MenuItem value="likeNew">Partially Screen Broken</MenuItem>
+              <MenuItem value="likeNew">Need a repair</MenuItem>
+              <MenuItem value="likeNew">Battery Issue</MenuItem>
+            </Select>
+          </FormControl>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleWatchPhotoChange}
+            style={{ marginTop: '20px' }}
+          />
+
+          {/* Submit for Inspection Button */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            style={{ marginTop: '20px' }}
           >
-            <MenuItem value="new">New</MenuItem>
-            <MenuItem value="used">Used</MenuItem>
-            <MenuItem value="likeNew">Like New</MenuItem>
-          </Select>
-        </FormControl>
+            Submit 
+          </Button>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleWatchPhotoChange}
-          style={{ marginTop: '20px' }}
-        />
-
-        {/* Submit for Inspection Button */}
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          style={{ marginTop: '20px' }}
-        >
-          Submit 
-        </Button>
-
-        {/* Message below the button */}
-        <Typography variant="body2" style={{ marginTop: '10px' }}>
-          We will get back to you in 2 working days regarding the best price for your watch and exchange options.
+          {/* Message below the button */}
+          <Typography variant="body2" style={{ marginTop: '10px' }}>
+            We will get back to you in 2 working days regarding the best price for your watch and exchange options.
+          </Typography>
+        </form>
+      )}
+      {formSubmitted && (
+        
+        
+        <Typography variant="body1" style={{ marginTop: '20px' }}>
+          Thank you for your submission!
         </Typography>
-      </form>
+      )}
     </Box>
   );
 };

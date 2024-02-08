@@ -44,10 +44,10 @@
     {
         background-image: url(../../assets/deepal2.jpg);
     }
-    /* 80%
+    80%
     {
         background-image: url(../../assets/josh-miller.jpg);
-    } */
+    }
     90%
     {
         background-image: url(../../assets/constantin2.jpg);
@@ -55,4 +55,16 @@
  
    
     
+}
+
+@media only screen and (max-width: 599px) {
+    .hosd {
+        background-size: cover; /* Adjust background size for mobile */
+        background-position: center; /* Center the background horizontally and vertically */
+    }
+
+    .images {
+        background-size: cover; /* Adjust background size for mobile */
+        background-position: center; /* Center the background horizontally and vertically */
+    }
 }

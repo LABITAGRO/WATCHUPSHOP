@@ -1,4 +1,3 @@
-// MainCarousel.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { tokens } from "../../theme2";
@@ -70,63 +69,60 @@ const MainCarousel = () => {
         borderRadius="1px"
         textAlign="left"
         position="absolute"
-        top={isNonMobile ? "40%" : "20px"} // Top margin adjustment for mobile
+        top={isNonMobile ? "40%" : "100px"} // Top margin adjustment for mobile
         right={isNonMobile ? undefined : "0"}
         margin={isNonMobile ? undefined : "0 auto"}
-        maxWidth={isNonMobile ? undefined : "240px"}
+        maxWidth={isNonMobile ? undefined : "250px"}
         sx={{
           opacity: "0",
         }}
-      > {/* Box 4 (Exchange) */}
-      <Box
-        width="50%"
-        padding="100px"
-        
-        borderRadius="5px"
-        
-          borderRight={isNonMobile ? "3px solid white" : "0"}
       >
-        <Typography
-          variant="h1"
-          onClick={handleOpenExchangeDialog}
-          style={{
-            cursor: 'pointer',
-            color: colors.primary[500],
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Exchange
-        </Typography>
-        <Dialog open={openExchangeDialog} onClose={handleCloseExchangeDialog}>
-          <DialogTitle>Exchange Your Watch</DialogTitle>
-          <DialogContent>
-            <ExchangeForm />
-          </DialogContent>
-        </Dialog>
-      </Box>
-        {/* Box 1 (buy)*/}
+        {/* Box 1 (Exchange) */}
         <Box
-          marginLeft={isNonMobile ? "5px" : "0"}
-          marginBottom={isNonMobile ? "0" : "10px"}
-          marginTop={isNonMobile ? "0" : "20px"} // Top margin for mobile
-          width="100%"
-          padding="100px"
+          width={isNonMobile ? "50%" : "100%"}
+          padding={isNonMobile ? "100px" : "20px"} // Adjusted padding for mobile
           borderRadius="5px"
+          background={isNonMobile ? "blue" : "green"} // New background for mobile
           borderRight={isNonMobile ? "3px solid white" : "0"}
         >
-          <Typography color={colors.greenAccent[300]}></Typography>
+          <Typography
+            variant="h1"
+            onClick={handleOpenExchangeDialog}
+            style={{
+              cursor: 'pointer',
+              color: colors.primary[500],
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            Exchange
+          </Typography>
+          <Dialog open={openExchangeDialog} onClose={handleCloseExchangeDialog}>
+            {/* <DialogTitle>Exchange Your Watch</DialogTitle> */}
+            <DialogContent>
+              <ExchangeForm />
+            </DialogContent>
+          </Dialog>
+        </Box>
+
+        {/* Box 2 (Buy) */}
+        <Box
+          width="100%"
+          padding={isNonMobile ? "100px" : "20px"} // Adjusted padding for mobile
+          borderRadius="5px"
+          background={isNonMobile ? "red" : "yellow"} // New background for mobile
+          borderRight={isNonMobile ? "3px solid white" : "0"}
+        >
           <Typography variant="h1">Buy</Typography>
         </Box>
 
-        {/* Box 2 (Sell) */}
+        {/* Box 3 (Sell) */}
         <Box
-          margin={isNonMobile ? "5px" : "0"}
-          marginBottom={isNonMobile ? "0" : "10px"}
           width="100%"
-          padding="100px"
+          padding={isNonMobile ? "100px" : "20px"} // Adjusted padding for mobile
           borderRadius="5px"
+          background={isNonMobile ? "orange" : "purple"} // New background for mobile
           borderRight={isNonMobile ? "3px solid white" : "0"}
         >
           <Typography
@@ -143,20 +139,19 @@ const MainCarousel = () => {
             Sell
           </Typography>
           <Dialog open={openSellDialog} onClose={handleCloseSellDialog}>
-            <DialogTitle>Sell Your Watch</DialogTitle>
+            <DialogTitle></DialogTitle>
             <DialogContent>
               <ProductForm handleCloseDialog={handleCloseSellDialog} />
             </DialogContent>
           </Dialog>
         </Box>
 
-        {/* Box 3 (Donate) */}
+        {/* Box 4 (Donate) */}
         <Box
-          marginBottom={isNonMobile ? "0" : "10px"}
           width="100%"
-          padding="100px"
+          padding={isNonMobile ? "100px" : "20px"} // Adjusted padding for mobile
           borderRadius="5px"
-          // borderRight={isNonMobile ? "3px solid white" : "0"}
+          background={isNonMobile ? "pink" : "brown"} // New background for mobile
         >
           <Typography
             variant="h1"
@@ -172,15 +167,13 @@ const MainCarousel = () => {
             Donate
           </Typography>
           <Dialog open={openDonateDialog} onClose={handleCloseDonateDialog}>
-            <DialogTitle>Donate to NGOs</DialogTitle>
+            <DialogTitle></DialogTitle>
             <DialogContent>
               <DonateForm handleCloseDialog={handleCloseDonateDialog} />
             </DialogContent>
           </Dialog>
         </Box>
 
-        {/* Box 4 (Exchange) */}
-        
       </Box>
     </Box>
   );

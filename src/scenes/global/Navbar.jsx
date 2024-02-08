@@ -9,9 +9,24 @@ import { useNavigate } from "react-router-dom";
 import { setIsCartOpen } from "../../state";
 import { ColorModeContext, tokens } from "../../theme2";
 // import LoginSignupModal from '../global/LoginSignupModal'; // Import the LoginSignupModal component
+import RegisterModal from './RegisterModal'; 
+import LoginModal from './LoginModal';
+
+
 
 
 function Navbar() {
+
+  // const history = useHistory();
+
+  // const handleLoginIconClick = () => {
+  //   // Redirect to the LoginModal.js file in the same directory
+  //   history.push('/LoginModal');
+  // };
+
+
+
+  
   let navItem = useRef(null);
   let navOption0 = useRef(null);
   let navOption1 = useRef(null);
@@ -46,12 +61,11 @@ function Navbar() {
       setIsLoginOpen(true);
     };
 
-    
-
-  
-    const handleLoginClose = () => {
+     const handleLoginClose = () => {
       setIsLoginOpen(false);
     };
+
+    
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -77,6 +91,7 @@ function Navbar() {
   }
 
   return (
+    <>
     <Box  
       backgroundColor="transparent"
       display="flex"
@@ -252,7 +267,8 @@ function Navbar() {
 
 
 {/* //admin icon */}
-            <Badge
+{/* //admin icon */}
+<Badge
         color="secondary"
         sx={{
           "& .MuiBadge-badge": {
@@ -303,11 +319,14 @@ function Navbar() {
     <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
       Login
     </Button>
-    <Button variant="outlined" color="primary" fullWidth sx={{ mt: 2 }}>
+    {/* <Button variant="outlined" color="primary" fullWidth sx={{ mt: 2 }}>
       Register
-    </Button>
+    </Button> */}
+     <RegisterModal />
   </Box>
 </Modal>;
+
+     
 
           </Box>
         </Box>
@@ -374,15 +393,7 @@ function Navbar() {
             columnGap="20px"
             zIndex="2"
           >
-            <IconButton
-              sx={{
-                color: colors.primary[200],
-                "&:hover": { cursor: "pointer", color: colors.redAccent[300] },
-                display: smobilePoint ? "none" : "flex",
-              }}
-            >
-              <Search />
-            </IconButton>
+            
             <Badge
               badgeContent={cart.length}
               color="secondary"
@@ -408,25 +419,13 @@ function Navbar() {
               </IconButton>
             </Badge>
 
-            <IconButton
-              onClick={colorMode.toggleColorMode}
-              sx={{
-                color: colors.primary[200],
-                "&:hover": { cursor: "pointer", color: colors.redAccent[300] }
-              }}
-            >
-              {theme.palette.mode === "dark" ? (
-                <DarkModeOutlined />
-              ) : (
-                <LightModeOutlined />
-              )}
-            </IconButton>
+            
           </Box>
         </Box>
       </Box>
       
     </Box>
+    </>
   );
 }
-
 export default Navbar;
