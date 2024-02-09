@@ -136,7 +136,7 @@ const ShoppingList = () => {
         gap="15px"
       >
         <Box>{error} - Something went wrong <br /> Try refeshing the page</Box>
-        <a
+        {/* <a
           style={{
             textDecoration: "none",
             backgroundColor: '#0f3ae6',
@@ -146,10 +146,10 @@ const ShoppingList = () => {
             padding: "10px 30px",
             "&:hover": { backgroundColor: '#3e64d6', }
           }}
-          href="https://ecommerce-websi te-giddyp.vercel.app/"
+          href="https://ecommerce-website-giddyp.vercel.app/"
         >
           Refresh
-        </a>
+        </a> */}
       </Box>)}
 
       {isPending && (<Box

@@ -1,16 +1,16 @@
-import { useEffect, useRef, useContext, useState } from "react";
+import { useEffect, useRef,  useState } from "react";
 import { TweenMax, Power4 } from 'gsap';
 import { SupervisorAccount } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge,FormControlLabel, Checkbox , Box, IconButton, TextField , Typography, Modal ,Button , useMediaQuery, useTheme } from "@mui/material";
-import { Link } from 'react-router-dom';
-import { DarkModeOutlined, LightModeOutlined, Phone, Email, Watch, Search, ShoppingCart, Menu } from "@mui/icons-material";
+// import { Link } from 'react-router-dom';
+import { Phone, Email, Watch, ShoppingCart,} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { setIsCartOpen } from "../../state";
-import { ColorModeContext, tokens } from "../../theme2";
+import {  tokens } from "../../theme2";
 // import LoginSignupModal from '../global/LoginSignupModal'; // Import the LoginSignupModal component
 import RegisterModal from './RegisterModal'; 
-import LoginModal from './LoginModal';
+// import LoginModal from './LoginModal';
 
 
 
@@ -68,9 +68,9 @@ function Navbar() {
     
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
+  // const colorMode = useContext(ColorModeContext);
   const breakPoint = useMediaQuery("(max-width:749px)");
-  const smobilePoint = useMediaQuery("(max-width:370px)");
+  // const smobilePoint = useMediaQuery("(max-width:370px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
@@ -86,9 +86,9 @@ function Navbar() {
   //   // Implement your logic here
   // };
 
-  const Navbar = ({ cart, handleAdminIconClick, dispatch, setIsCartOpen }) => {
+  // const Navbar = ({ cart, handleAdminIconClick, dispatch, setIsCartOpen }) => {
     
-  }
+  // }
 
   return (
     <>

@@ -185,16 +185,16 @@ const DonateForm = () => {
           style={{ marginTop: '20px' }}
         /> */}
 
-        <TextField
-          label="Is there any Special Occasion when you have brought it ?
-          Ex-Like Anniversary "
-          variant="outlined"
-          fullWidth
-          value={donorName}
-          onChange={handleDonorNameChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
+<TextField
+  label="Is there any Special Occasion? (e.g., Anniversary)"
+  variant="outlined"
+  fullWidth
+  value={donorName}
+  onChange={handleDonorNameChange}
+  margin="normal"
+  style={{ marginTop: '20px' }}
+  InputLabelProps={{ shrink: true }}
+/>
 
        
 

@@ -36,7 +36,7 @@ const About = () => {
 
                 >
                     <img
-                        src={rakshit}
+                        src={shreesha}
                         width="300px"
                         height="500px"
                         style={{
@@ -49,7 +49,7 @@ const About = () => {
                     left="5%"
                 >
                     <img
-                        src={shreesha}
+                        src={rakshit}
                         width={breakPoint ? "300px" : "440px"}
                         height="500px"
                         style={{
