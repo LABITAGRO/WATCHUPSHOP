@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent,Typography, DialogTitle, TextField } from '@mui/material';
-
+import { Button, Dialog, DialogActions, DialogContent, Typography, DialogTitle, TextField } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import axios from 'axios';
 
 const Register = () => {
@@ -11,10 +11,11 @@ const Register = () => {
     username: '',
     password: ''
   });
+  const [showError, setShowError] = useState(false);
 
   const { name, email, username, password } = formData;
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -24,17 +25,16 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('/api/auth/register', formData);
+      const response = await axios.post('https://watchupshop.onrender.com/api/auth/register', formData);
       if (response.status === 200) {
         alert('Registration successful');
         setOpen(false); // Close the modal after successful registration
       } else {
-        const data = await response.json();
-        alert(data.error || 'Registration failed');
+        alert('Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
-      alert('Registration failed');
+      setShowError(true);
     }
   };
 
@@ -111,6 +111,11 @@ const Register = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      {showError && (
+        <Alert severity="error" style={{ marginTop: '20px' }}>
+          Registration failed. Please try again.
+        </Alert>
+      )}
     </div>
   );
 };

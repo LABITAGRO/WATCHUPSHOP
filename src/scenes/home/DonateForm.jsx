@@ -114,7 +114,12 @@ const DonateForm = () => {
       formData.append('watchYear', watchYear);
       formData.append('selectedBrand', selectedBrand);
 
-      const response = await fetch('http://localhost:5000/api/donations', {
+      // const response = await fetch('http://localhost:5000/api/donations', {
+      //   method: 'POST',
+      //   body: formData,
+      // });
+
+      const response = await fetch('https://watchupshop.onrender.com/api/donations', {
         method: 'POST',
         body: formData,
       });
