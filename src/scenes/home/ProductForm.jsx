@@ -53,7 +53,7 @@ const ProductForm = () => {
       formData.append('reasonForSelling', reasonForSelling);
       formData.append('image', image);
 
-      const response = await fetch('https://watchupshop.onrender.com/api/products', {
+      const response = await fetch('http://localhost:3500/api/products', {
         method: 'POST',
         body: formData,
       });

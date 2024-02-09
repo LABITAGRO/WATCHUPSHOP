@@ -189,7 +189,7 @@ function Navbar() {
             alignItems="center"
             fontWeight="bold"
           >
-            <IconButton
+            {/* <IconButton
 
               sx={{
                 color: "#8f8f8f",
@@ -199,14 +199,25 @@ function Navbar() {
               }}
             >
               <Watch />
-            </IconButton>
+            </IconButton> */}
             <Box
               display="flex"
               alignItems="center"
               mt="3px"
             >
-               <Typography variant="h4" style={{ fontSize: '48px' }}> Watchupshop
-              </Typography>
+               <Typography
+    variant="h4"
+    style={{
+        fontSize: '28px', // Default font size for desktop
+        '@media (max-width: 599px)': {
+            fontSize: '10px', // Font size for mobile screens
+        },
+    }}
+>
+    Watchupshop
+</Typography>
+
+
             </Box>
           </Box>
           <Box
@@ -214,7 +225,7 @@ function Navbar() {
             justifyContent="space-between"
             columnGap="20px"
             zIndex="2"
-          >
+          > 
             {/* <IconButton
               ref={el => { navOption0 = el; }}
               sx={{
@@ -302,7 +313,7 @@ function Navbar() {
       bgcolor: '#000', // Black background color
       boxShadow: 24,
       p: 4,
-      width: 400,
+      width: 200,
       textAlign: 'center', // Center align the content
     }}
   >
