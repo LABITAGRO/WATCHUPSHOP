@@ -138,7 +138,7 @@ function Navbar() {
             >
               <Phone />
             </IconButton>
-            + 91 9398216337
+            +91 99494 22044
           </Box>
           <Box
             onClick={() => navigate("/")}
@@ -280,30 +280,30 @@ function Navbar() {
 {/* //admin icon */}
 {/* //admin icon */}
 <Badge
-        color="secondary"
-        sx={{
-          "& .MuiBadge-badge": {
-            right: 5,
-            top: 5,
-            padding: "0 4px",
-            height: "14px",
-            minWidth: "13px",
-          },
-        }}
-      >
-        <IconButton
-  ref={el => { navOption2 = el; }}
-  onClick={handleLoginOpen} // Call handleLoginOpen function on click
+  color="secondary"
   sx={{
-    color: colors.primary[200],
-    "&:hover": { cursor: "pointer", color: colors.redAccent[300] },
+    "& .MuiBadge-badge": {
+      right: 2, // Adjusted for smaller devices
+      top: 2, // Adjusted for smaller devices
+      padding: "0 4px",
+      height: "14px",
+      minWidth: "13px",
+    },
   }}
 >
-  <SupervisorAccount />
-</IconButton>
-      </Badge>
+  <IconButton
+    ref={el => { navOption2 = el; }}
+    onClick={handleLoginOpen} // Call handleLoginOpen function on click
+    sx={{
+      color: colors.primary[200],
+      "&:hover": { cursor: "pointer", color: colors.redAccent[300] },
+    }}
+  >
+    <SupervisorAccount />
+  </IconButton>
+</Badge>
 
-      <Modal open={isLoginOpen} onClose={handleLoginClose}>
+<Modal open={isLoginOpen} onClose={handleLoginClose}>
   <Box
     sx={{
       position: 'absolute',
@@ -313,7 +313,8 @@ function Navbar() {
       bgcolor: '#000', // Black background color
       boxShadow: 24,
       p: 4,
-      width: 200,
+      width: "90%", // Adjusted for responsiveness
+      maxWidth: 400, // Adjusted for responsiveness
       textAlign: 'center', // Center align the content
     }}
   >
@@ -335,7 +336,8 @@ function Navbar() {
     </Button> */}
      <RegisterModal />
   </Box>
-</Modal>;
+</Modal>
+
 
      
 

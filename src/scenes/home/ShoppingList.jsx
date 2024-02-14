@@ -1,87 +1,139 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Item from "../../components/Item";
-import { Button, Typography, useTheme } from "@mui/material";
+import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDispatch, useSelector } from "react-redux";
-import { setItems } from "../../state";
+import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme2";
 
-import sanityClient from "../../client.js";
-
 const ShoppingList = () => {
-  const [postData, setPostData] = useState(null);
-
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("all");
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
-  const watchItems = useSelector((state) => state.cart.items);
   const smobilePoint = useMediaQuery("(max-width:370px)");
   const breakPoint = useMediaQuery("(min-width:769px)");
-  let time = new Date();
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  function getItems() {
-    sanityClient.fetch(
-      `*[_type == "watchProject"]{
-               id,
-               name,
-               longDesc,
-               shortDesc,
-               price,
-               category,
-               description,
-               imageUrl,
-               reviews,
-              }`).then((data) => {
-        if (data.length == 0) {
-          throw Error('could not fetch the data from backend');
-        } else {
-          setError(null);
-          setPostData(data);
-          dispatch(setItems(data));
-        }
-      }).catch(err => {
-        setError(err.message);
-      });
-    setIsPending(false);
-  }
+  const sampleData = [
+    {
+      id: 1,
+      name: "Breitling Navitimer",
+      longDesc: "Long description for Famous Watch 1",
+      shortDesc: "Short description for Famous Watch 1",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+    {
+      id: 2,
+      name: "Patek Philippe Nautilus",
+      longDesc: "Long description for Famous Watch 2",
+      shortDesc: "Short description for Famous Watch 2",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+    {
+      id: 3,
+      name: "Audemars Piguet Royal Oak",
+      longDesc: "Long description for Famous Watch 3",
+      shortDesc: "Short description for Famous Watch 3",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+    {
+      id: 4,
+      name: "Seiko SKX007",
+      longDesc: "Long description for Famous Watch 4",
+      shortDesc: "Short description for Famous Watch 4",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+    {
+      id: 5,
+      name: "Rolex Submariner",
+      longDesc: "Long description for Famous Watch 5",
+      shortDesc: "Short description for Famous Watch 5",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+    {
+      id: 6,
+      name: "Tag Heuer Carrera",
+      longDesc: "Long description for Famous Watch 6",
+      shortDesc: "Short description for Famous Watch 6",
+      price: 50000, // Original price in rupees
+      discountPrice: 45000, // Discounted price in rupees
+      category: "All",
+      imageUrl: require("./jamaal.jpg"),
+      reviews: [],
+    },
+  ];
+  
 
-  useEffect(() => {
-    getItems();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // Randomly selecting products for one category
+  const recommendedItems = sampleData.filter((item) => item.category === "Recommended");
+  const randomRecommendedItem = recommendedItems[Math.floor(Math.random() * recommendedItems.length)];
 
-  const recommendedItems = watchItems.filter(
-    (item) => item.category === "Recommended"
-  );
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  const newArrivalsItems = watchItems.filter(
-    (item) => item.category === "newArrivals"
-  );
-  const bestPricesItems = watchItems.filter(
-    (item) => item.category === "bestPrices"
-  );
-  const freeDeliveryItems = watchItems.filter(
-    (item) => item.category === "freeDelivery"
-  );
-  const topRatedItems = watchItems.filter(
-    (item) => item.category === "topRated"
-  );
+  const handleOpenDialog = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedItem(null);
+  };
+
+  const renderItems = () => {
+    let itemsToRender = sampleData;
+
+    if (value !== "all") {
+      itemsToRender = sampleData.filter((item) => item.category === value);
+    }
+
+    return (
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+        gap="20px"
+      >
+        {itemsToRender.map((item) => (
+          <Box key={item.id} onClick={() => handleOpenDialog(item)}>
+            <Item item={item} />
+          </Box>
+        ))}
+      </Box>
+    );
+  };
 
   return (
     <Box
       width={breakPoint ? "80%" : "90%"}
-      margin="40px auto 80px">
+      margin="40px auto 80px"
+    >
       <Box
         display="flex"
         justifyContent="center"
@@ -91,14 +143,15 @@ const ShoppingList = () => {
       >
         <Typography
           variant={smobilePoint ? "h3" : "h2"}
-        // textAlign="center"  
         >
           Featured
         </Typography>
         <Typography
           variant={smobilePoint ? "h3" : "h2"}
           fontWeight="bold"
-        >Products</Typography>
+        >
+          Products
+        </Typography>
       </Box>
       <Tabs
         textColor="primary"
@@ -106,7 +159,7 @@ const ShoppingList = () => {
         value={value}
         onChange={handleChange}
         centered
-        TabIndicatorProps={{ sx: { display: breakPoint ? "block" : "none", } }}
+        TabIndicatorProps={{ sx: { display: breakPoint ? "block" : "none" } }}
         sx={{
           m: "25px",
           "& .MuiTabs-flexContainer": {
@@ -125,83 +178,33 @@ const ShoppingList = () => {
         <Tab label="Free Delivery" value="freeDelivery" />
         <Tab label="TOP RATED" value="topRated" />
       </Tabs>
-      {error && (<Box
-        display="flex"
-        height="50vh"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-        pt="20px"
-        gap="15px"
-      >
-        <Box>{error} - Something went wrong <br /> Try refeshing the page</Box>
-        {/* <a
-          style={{
-            textDecoration: "none",
-            backgroundColor: '#0f3ae6',
-            boxShadow: "none",
-            color: "white",
-            borderRadius: "5px",
-            padding: "10px 30px",
-            "&:hover": { backgroundColor: '#3e64d6', }
-          }}
-          href="https://ecommerce-website-giddyp.vercel.app/"
-        >
-          Refresh
-        </a> */}
-      </Box>)}
-
-      {isPending && (<Box
-        height="50vh"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        pt="20px"
-      >
-        <ScaleLoader color="#d79736" />
-      </Box>)
-      }
-      <Box
-        display={smobilePoint ? "flex" : "grid"}
-        flexDirection="column"
-        alignItems="center"
-        gridTemplateColumns="repeat(auto-fill, 300px)"
-        justifyContent="space-around"
-        rowGap="20px"
-        columnGap={"1.33%"}
-      >
-
-        {value === "all" &&
-          watchItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-
-        {value === "recommended" &&
-          recommendedItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-
-        {value === "newArrivals" &&
-          newArrivalsItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-
-        {value === "bestPrices" &&
-          bestPricesItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-
-        {value === "freeDelivery" &&
-          freeDeliveryItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-
-        {value === "topRated" &&
-          topRatedItems?.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
-          ))}
-      </Box>
+      {renderItems()}
+      <Dialog open={selectedItem !== null} onClose={handleCloseDialog} maxWidth="lg">
+        <DialogTitle>{selectedItem?.name}</DialogTitle>
+        <DialogContent sx={{ backgroundColor: "#000", color: "#fff", display: "flex" }}>
+          <Box sx={{ flex: 1 }}>
+            <img src={selectedItem?.imageUrl} alt={selectedItem?.name} style={{ width: "100%", height: "auto" }} />
+          </Box>
+          <Box sx={{ flex: 1, padding: "20px" }}>
+            <Typography>
+              <span style={{ textDecoration: "line-through", marginRight: "5px" }}>
+                ₹{selectedItem?.price.toLocaleString()}
+              </span>
+              ₹{selectedItem?.discountPrice.toLocaleString()}
+            </Typography>
+            <Typography>{selectedItem?.shortDesc}</Typography>
+            <Typography>{selectedItem?.longDesc}</Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="primary" onClick={handleCloseDialog}>
+            Close
+          </Button>
+          <Button variant="contained" style={{ backgroundColor: "yellow", color: "black" }} onClick={handleCloseDialog}>
+            Add to Cart
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

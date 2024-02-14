@@ -177,6 +177,12 @@ const Footer = () => {
                     alignItems="center"
                     justifyContent="center"
                 ><Bolt fontSize="small" /> Labit Agro Private Limited</Box>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                ><Bolt fontSize="small" />+91 93982 16337</Box>
+                
             </Box>
         </Box >
     );

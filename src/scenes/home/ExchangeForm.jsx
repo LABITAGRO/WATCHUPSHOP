@@ -7,6 +7,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Alert from '@mui/material/Alert';
 
 const topWatchBrands = [
   'Rolex',
@@ -41,6 +42,7 @@ const ExchangeForm = () => {
   const [watchCondition, setWatchCondition] = useState('');
   const [watchPhoto, setWatchPhoto] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false); 
+  
 
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
@@ -81,7 +83,7 @@ const ExchangeForm = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('https://watchupshop.onrender.com/api/exchangerequests', {
+      const response = await fetch('http://localhost:3500/api/exchangerequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,16 +97,18 @@ const ExchangeForm = () => {
           watchPhoto: watchPhoto ? watchPhoto.name : null, // Assuming you're sending the file name
         }),
       });
+
+      //  // Set formSubmitted to true after successful submission
+       setFormSubmitted(true);
   
       if (!response.ok) {
         throw new Error('Failed to submit exchange request');
       }
   
-      const result = await response.json();
-      console.log(result);
+      // const result = await response.json();
+      // console.log(result);
 
-      // Set formSubmitted to true to hide the form
-      setFormSubmitted(true);
+      
   
       // Reset the form after submission
       setProductName('');
@@ -123,7 +127,14 @@ const ExchangeForm = () => {
   return (
     <Box>
       <Typography variant="h4">Exchange Your Watch</Typography>
-      {!formSubmitted && (
+
+      {/* Conditional rendering based on formSubmitted state */}
+      {formSubmitted ? (
+        <Alert severity="success" style={{ marginTop: '20px' }}>
+          Thank you for your submission!
+        </Alert>
+      ) : (
+     
         <form>
           <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
             <InputLabel>Watch Type</InputLabel>
@@ -229,13 +240,10 @@ const ExchangeForm = () => {
             We will get back to you in 2 working days regarding the best price for your watch and exchange options.
           </Typography>
         </form>
-      )}
-      {formSubmitted && (
+      
         
         
-        <Typography variant="body1" style={{ marginTop: '20px' }}>
-          Thank you for your submission!
-        </Typography>
+        
       )}
     </Box>
   );

@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
+import Alert from '@mui/material/Alert';
 
 const topWatchBrands = [
   'Rolex',
@@ -45,6 +46,7 @@ const DonateForm = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [showOtherBrand, setShowOtherBrand] = useState(false);
   const [otherBrand, setOtherBrand] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false); 
 
   const handleDonationTypeChange = (event) => {
     setDonationType(event.target.value);
@@ -124,6 +126,9 @@ const DonateForm = () => {
         body: formData,
       });
 
+       // Set formSubmitted to true after successful submission
+       setFormSubmitted(true);
+
       const result = await response.json();
       console.log(result);
 
@@ -148,6 +153,15 @@ const DonateForm = () => {
   return (
     <Box>
       <Typography variant="h4">-: Donate :-</Typography>
+
+      {/* Conditional rendering based on formSubmitted state */}
+      {formSubmitted ? (
+        <Alert severity="success" style={{ marginTop: '20px' }}>
+          Thank you for your submission!
+        </Alert>
+      ) : (
+
+
       <form>
         <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
           <InputLabel>Donation Type</InputLabel>
@@ -324,6 +338,7 @@ const DonateForm = () => {
           Submit
         </Button>
       </form>
+      )}
     </Box>
   );
 };

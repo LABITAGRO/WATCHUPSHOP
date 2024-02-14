@@ -25,7 +25,7 @@ const Register = () => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('https://watchupshop.onrender.com/api/auth/register', formData);
+      const response = await axios.post('http://localhost:3500/api/auth/register', formData);
       if (response.status === 200) {
         alert('Registration successful');
         setOpen(false); // Close the modal after successful registration
