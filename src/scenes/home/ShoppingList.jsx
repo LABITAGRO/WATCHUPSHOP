@@ -18,6 +18,7 @@ const ShoppingList = () => {
   const breakPoint = useMediaQuery("(min-width:769px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -92,6 +93,7 @@ const ShoppingList = () => {
     },
   ];
   
+  
 
   // Randomly selecting products for one category
   const recommendedItems = sampleData.filter((item) => item.category === "Recommended");
@@ -117,8 +119,22 @@ const ShoppingList = () => {
     return (
       <Box
         display="grid"
-        gridTemplateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+        gridTemplateColumns="repeat(auto-fill, minmax(250px, 1fr))"
         gap="20px"
+
+        sx={{
+          m: "25px",
+          "& .MuiTabs-flexContainer": {
+            flexWrap: "wrap",
+          },
+          "& .MuiButtonBase-root": {
+            width: "13%", 
+            fontSize: breakPoint ? "0.8rem" : "0.52rem",
+          },
+        }}
+
+       
+        
       >
         {itemsToRender.map((item) => (
           <Box key={item.id} onClick={() => handleOpenDialog(item)}>
@@ -130,7 +146,8 @@ const ShoppingList = () => {
   };
 
   return (
-    <Box
+    <Box id="recommendedItemsSection">
+  <Box
       width={breakPoint ? "80%" : "90%"}
       margin="40px auto 80px"
     >
@@ -206,6 +223,7 @@ const ShoppingList = () => {
         </DialogActions>
       </Dialog>
     </Box>
+</Box>
   );
 };
 

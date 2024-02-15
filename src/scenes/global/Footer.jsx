@@ -34,7 +34,7 @@ const Footer = () => {
                 rowGap="30px"
                 columnGap="clamp(30px, 30px, 40px)"
             >
-                <Box width={mobilePoint ? "clamp(50%, 15%, 40%)" : "clamp(30%, 15%, 40%)"}>
+                <Box width={mobilePoint ? "clamp(100%, 5%, 40%)" : "clamp(30%, 15%, 40%)"}>
                     <Box
                         display="flex"
                         alignItems="center"
@@ -57,15 +57,18 @@ const Footer = () => {
                         p="5px 1px"
                     >
                         <IconButton
-                            sx={{
-                                "&: hover": { cursor: "pointer", color: colors.primary[600] },
-
-                                color: colors.primary[800],
-                            }}
-                        >
-                            <Instagram fontSize="large" />
-                        </IconButton>
+  component="a"
+  href="https://www.instagram.com/watchupshop1/?igsh=dDk2NDhtNnp4eTFk"
+  sx={{
+    "&:hover": { cursor: "pointer", color: colors.primary[600] },
+    color: colors.primary[800],
+  }}
+>
+  <Instagram fontSize="large" />
+</IconButton>
                         <IconButton
+                        component="a"
+                        href="https://www.instagram.com/watchupshop1/?igsh=dDk2NDhtNnp4eTFk"
                             sx={{
                                 "&: hover": { cursor: "pointer", color: colors.primary[600] },
                                 fontSize: "30px",
@@ -75,6 +78,9 @@ const Footer = () => {
                             <Facebook fontSize="large" />
                         </IconButton>
                         <IconButton
+
+component="a"
+href="https://www.instagram.com/watchupshop1/?igsh=dDk2NDhtNnp4eTFk"
                             sx={{
                                 "&: hover": { cursor: "pointer", color: colors.primary[700] },
                                 fontSize: "30px",
@@ -86,7 +92,7 @@ const Footer = () => {
                     </Box>
                 </Box>
                 <Box
-                    width={mobilePoint ? "clamp(50%, 15%, 40%)" : "clamp(16%, 15%, 15%)"}
+                    width={mobilePoint ? "clamp(100%, 15%, 40%)" : "clamp(16%, 15%, 15%)"}
                     color="#151515">
                     <Typography variant="h4" fontWeight="bold" mb="20px">
                         About Us
@@ -176,12 +182,12 @@ const Footer = () => {
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                ><Bolt fontSize="small" /> Labit Agro Private Limited</Box>
+                ><Bolt fontSize="small" /> Developed By Labit Agro Private Limited</Box>
                 <Box
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                ><Bolt fontSize="small" />+91 93982 16337</Box>
+                ><Bolt fontSize="small" />| +91 93982 16337 |Copyright © |All Rights Reserved.</Box>
                 
             </Box>
         </Box >

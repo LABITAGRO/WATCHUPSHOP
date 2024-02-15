@@ -33,12 +33,25 @@ const topWatchBrands = [
   'Zenith',
 ];
 
+const causes = [
+  { id: 1, name: 'Health Care', organizations: ['Indian Cancer Society', 'Childline India Foundation', 'The global fund to fight AIDS, tuberculosis and malaria (GFATM)', 'Heart Foundation of India', 'Other'] },
+  { id: 2, name: 'Education', organizations: ['CRY (Child Right and You)', 'Save the children India', 'Pratham Education Foundation', 'Akshaya Patra Foundation', 'Teach For India', 'Other'] },
+  { id: 3, name: 'Social Service', organizations: ['Oxfam India', 'Centre for Science and environment', 'WWF - India', 'Solar Energy Society of India', 'Indian Climate Action Network', 'Other'] },
+  { id: 4, name: 'Environment', organizations: ['Greenpeace India', 'Wildlife Trust of India (WTI)', 'World Wide Fund for Nature (WWF)', 'Chintan Environmental Research and Action', 'Ashoka Trust for Research in Ecology and Environment (ATREE)', 'Other'] },
+  { id: 5, name: 'Animal Welfare', organizations: ['People for Animal (PFA)', 'Bluecross of India', 'Friendicoes', 'Animal Welfare board of India (AWBI)', 'Compassion Unlimited Plus Action (CUPA)', 'Other'] },
+  { id: 6, name: 'Disaster Relief', organizations: ['Care India', 'Action Aid India', 'Rapid response', 'Oxam India', 'Other'] },
+  { id: 7, name: 'Elderly Care', organizations: ['HelpAge India', 'Agewell Foundation', 'Dada Dadi Helf Foundation', 'Elderly Care India', 'The Senior Care Foundation', 'Other'] },
+  { id: 8, name: 'Disability', organizations: ['Action for', 'Autism', 'Indian Spinal Injuries', 'Narayan Seva Sansthan', 'Diya Foundation', 'Centre', 'National Centre for Promotion of Employment for disabled People (NCPEDP)', 'Other'] },
+  { id: 9, name: 'Women Empowerment', organizations: ['Self Employed Women\'s Association (SEWA)', 'Guria India', 'Action Aid', 'Snehalya', 'My Choices Foundation', 'Other'] },
+];
+
 const DonateForm = () => {
   const [donationType, setDonationType] = useState('');
   const [donationAmount, setDonationAmount] = useState('');
   const [donorName, setDonorName] = useState('');
   const [donorPhoto, setDonorPhoto] = useState(null);
-  const [selectedNGO, setSelectedNGO] = useState('');
+  const [selectedCause, setSelectedCause] = useState('');
+  const [selectedOrganization, setSelectedOrganization] = useState('');
   const [percentage, setPercentage] = useState(50); // Default percentage
   const [productName, setProductName] = useState('');
   const [selectedWatchType, setSelectedWatchType] = useState('');
@@ -65,8 +78,14 @@ const DonateForm = () => {
     setDonorPhoto(file);
   };
 
-  const handleSelectedNGOChange = (event) => {
-    setSelectedNGO(event.target.value);
+  const handleSelectedCauseChange = (event) => {
+    const causeId = event.target.value;
+    setSelectedCause(causeId);
+    setSelectedOrganization(''); // Reset selected organization when cause changes
+  };
+
+  const handleSelectedOrganizationChange = (event) => {
+    setSelectedOrganization(event.target.value);
   };
 
   const handlePercentageChange = (event, newValue) => {
@@ -102,42 +121,42 @@ const DonateForm = () => {
   };
 
   const handleSubmit = async () => {
-    // Implement your submission logic here
     try {
       const formData = new FormData();
       formData.append('donationType', donationType);
       formData.append('donationAmount', donationAmount);
       formData.append('donorName', donorName);
       formData.append('donorPhoto', donorPhoto);
-      formData.append('selectedNGO', selectedNGO);
+      formData.append('selectedCause', selectedCause); // Corrected field name
+      formData.append('selectedOrganization', selectedOrganization); // Corrected field name
       formData.append('percentage', percentage);
       formData.append('productName', productName);
       formData.append('selectedWatchType', selectedWatchType);
       formData.append('watchYear', watchYear);
       formData.append('selectedBrand', selectedBrand);
-
-      // const response = await fetch('http://localhost:5000/api/donations', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-
+  
       const response = await fetch('http://localhost:3500/api/donations', {
         method: 'POST',
         body: formData,
       });
-
-       // Set formSubmitted to true after successful submission
-       setFormSubmitted(true);
-
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
       const result = await response.json();
       console.log(result);
-
+  
+      // Set formSubmitted to true after successful submission
+      setFormSubmitted(true);
+  
       // Reset the form after submission
       setDonationType('');
       setDonationAmount('');
       setDonorName('');
       setDonorPhoto(null);
-      setSelectedNGO('');
+      setSelectedCause('');
+      setSelectedOrganization('');
       setPercentage(50); // Reset percentage to default
       setProductName('');
       setSelectedWatchType('');
@@ -149,6 +168,7 @@ const DonateForm = () => {
       console.error('Error submitting form:', error);
     }
   };
+  
 
   return (
     <Box>
@@ -160,184 +180,174 @@ const DonateForm = () => {
           Thank you for your submission!
         </Alert>
       ) : (
+        <form>
+          <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Donation Type</InputLabel>
+            <Select
+              value={donationType}
+              onChange={handleDonationTypeChange}
+              label="Donation Type"
+            >
+              <MenuItem value="partial">Partial Donation</MenuItem>
+              <MenuItem value="full">Full Amount Donation</MenuItem>
+            </Select>
+          </FormControl>
+
+          {donationType === 'partial' && (
+            <>
+              <Typography id="percentage-slider" gutterBottom style={{ marginTop: '20px' }}>
+                Percentage of Sold Price: {percentage}%
+              </Typography>
+              <Slider
+                value={percentage}
+                onChange={handlePercentageChange}
+                aria-labelledby="percentage-slider"
+                valueLabelDisplay="auto"
+                step={1}
+                marks
+                min={1}
+                max={100}
+                style={{ marginTop: '10px' }}
+              />
+            </>
+          )}
+
+          {/* <TextField
+            label="Donation Amount"
+            variant="outlined"
+            fullWidth
+            value={donationAmount}
+            onChange={handleDonationAmountChange}
+            margin="normal"
+            style={{ marginTop: '20px' }}
+          /> */}
+
+          <TextField
+            label="Donor Name"
+            variant="outlined"
+            fullWidth
+            value={donorName}
+            onChange={handleDonorNameChange}
+            margin="normal"
+            style={{ marginTop: '20px' }}
+          />
+
+          
+
+          <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Select a Cause</InputLabel>
+            <Select
+              value={selectedCause}
+              onChange={handleSelectedCauseChange}
+              label="Select a Cause"
+            >
+              {causes.map((cause) => (
+                <MenuItem key={cause.id} value={cause.id}>
+                  {cause.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {selectedCause && (
+            <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+              <InputLabel>Select Organization</InputLabel>
+              <Select
+                value={selectedOrganization}
+                onChange={handleSelectedOrganizationChange}
+                label="Select Organization"
+              >
+                {causes.find((cause) => cause.id === selectedCause)?.organizations.map((organization, index) => (
+                  <MenuItem key={index} value={organization}>
+                    {organization}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+<FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Select Brand</InputLabel>
+            <Select
+              value={selectedBrand}
+              onChange={handleBrandOptionsChange}
+              label="Select Brand"
+            >
+              {topWatchBrands.map((brand, index) => (
+                <MenuItem key={index} value={brand}>
+                  {brand}
+                </MenuItem>
+              ))}
+              <MenuItem value="Other">Other</MenuItem>
+            </Select>
+          </FormControl>
 
 
-      <form>
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Donation Type</InputLabel>
-          <Select
-            value={donationType}
-            onChange={handleDonationTypeChange}
-            label="Donation Type"
-          >
-            <MenuItem value="partial">Partial Donation</MenuItem>
-            <MenuItem value="full">Full Amount Donation</MenuItem>
-          </Select>
-        </FormControl>
+          
 
-        {donationType === 'partial' && (
-          <>
-            <Typography id="percentage-slider" gutterBottom style={{ marginTop: '20px' }}>
-              Percentage of Sold Price: {percentage}%
-            </Typography>
-            <Slider
-              value={percentage}
-              onChange={handlePercentageChange}
-              aria-labelledby="percentage-slider"
-              valueLabelDisplay="auto"
-              step={1}
-              marks
-              min={1}
-              max={100}
+          <TextField
+            label="Name of Watch"
+            variant="outlined"
+            fullWidth
+            value={productName}
+            onChange={handleProductNameChange}
+            margin="normal"
+            style={{ marginTop: '20px' }}
+          />
+
+<FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
+            <InputLabel>Watch Type</InputLabel>
+            <Select
+              value={selectedWatchType}
+              onChange={handleWatchTypeOptionsChange}
+              label="Watch Type"
+            >
+              <MenuItem value="analog">Analog</MenuItem>
+              <MenuItem value="digital">Digital</MenuItem>
+              <MenuItem value="smart">Smart Watch</MenuItem>
+              <MenuItem value="automatic">Automatic Watch</MenuItem>
+              <MenuItem value="mechanical">Mechanical Watch</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Year of Manufacturing"
+            variant="outlined"
+            fullWidth
+            value={watchYear}
+            onChange={handleWatchYearChange}
+            margin="normal"
+            style={{ marginTop: '20px' }}
+          />
+
+          
+          {showOtherBrand && (
+            <TextField
+              label="Other Brand Name"
+              variant="outlined"
+              fullWidth
+              value={otherBrand}
+              onChange={handleOtherBrandChange}
+              margin="normal"
               style={{ marginTop: '10px' }}
             />
-          </>
-        )}
-
-        {/* <TextField
-          label="Donation Amount"
-          variant="outlined"
-          fullWidth
-          value={donationAmount}
-          onChange={handleDonationAmountChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        /> */}
-
-<TextField
-  label="Is there any Special Occasion? (e.g., Anniversary)"
-  variant="outlined"
-  fullWidth
-  value={donorName}
-  onChange={handleDonorNameChange}
-  margin="normal"
-  style={{ marginTop: '20px' }}
-  InputLabelProps={{ shrink: true }}
-/>
-
-       
-
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Select NGO</InputLabel>
-          <Select
-            value={selectedNGO}
-            onChange={handleSelectedNGOChange}
-            label="Select NGO"
-          >
-            <MenuItem value="ngo1">NGO 1</MenuItem>
-            <MenuItem value="ngo2">NGO 2</MenuItem>
-            <MenuItem value="ngo3">NGO 3</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Select Brand</InputLabel>
-          <Select
-            value={selectedBrand}
-            onChange={handleBrandOptionsChange}
-            label="Select Brand"
-          >
-            {topWatchBrands.map((brand, index) => (
-              <MenuItem key={index} value={brand}>
-                {brand}
-              </MenuItem>
-            ))}
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-        </FormControl>
-
-        {showOtherBrand && (
-          <TextField
-            label="Other Brand Name"
-            variant="outlined"
-            fullWidth
-            value={otherBrand}
-            onChange={handleOtherBrandChange}
-            margin="normal"
-            style={{ marginTop: '10px' }}
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleDonorPhotoChange}
+            style={{ marginTop: '20px' }}
           />
-        )}
 
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Watch Type</InputLabel>
-          <Select
-            value={selectedWatchType}
-            onChange={handleWatchTypeOptionsChange}
-            label="Watch Type"
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            style={{ marginTop: '20px' }}
           >
-            <MenuItem value="analog">Analog</MenuItem>
-            <MenuItem value="digital">Digital</MenuItem>
-            <MenuItem value="smart">Smart Watch</MenuItem>
-            <MenuItem value="smart">Automatic Watch</MenuItem>
-            <MenuItem value="smart">Mechanical Watch</MenuItem>
-            {/* Add more watch type options as needed */}
-          </Select>
-        </FormControl>
-
-        <TextField
-          label="Name of Product"
-          variant="outlined"
-          fullWidth
-          value={productName}
-          onChange={handleProductNameChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
-
-        <TextField
-          label="Year of Manufacturing"
-          variant="outlined"
-          fullWidth
-          value={watchYear}
-          onChange={handleWatchYearChange}
-          margin="normal"
-          style={{ marginTop: '20px' }}
-        />
-
-        <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-          <InputLabel>Select Brand</InputLabel>
-          <Select
-            value={selectedBrand}
-            onChange={handleBrandOptionsChange}
-            label="Select Brand"
-          >
-            {topWatchBrands.map((brand, index) => (
-              <MenuItem key={index} value={brand}>
-                {brand}
-              </MenuItem>
-            ))}
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-        </FormControl>
-
-        {showOtherBrand && (
-          <TextField
-            label="Other Brand Name"
-            variant="outlined"
-            fullWidth
-            value={otherBrand}
-            onChange={handleOtherBrandChange}
-            margin="normal"
-            style={{ marginTop: '10px' }}
-          />
-        )}
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleDonorPhotoChange}
-          style={{ marginTop: '20px' }}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          style={{ marginTop: '20px' }}
-        >
-          Submit
-        </Button>
-      </form>
+            Submit
+          </Button>
+        </form>
       )}
     </Box>
   );

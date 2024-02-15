@@ -10,6 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import ProductForm from './ProductForm';
 import DonateForm from './DonateForm'
 import ExchangeForm from './ExchangeForm';
+import ShoppingList from './ShoppingList'; // Import the ShoppingList component
 
 const MainCarousel = () => {
   const theme = useTheme();
@@ -61,16 +62,17 @@ const MainCarousel = () => {
         ref={el => { imgItem = el }}
         display="flex"
         flexDirection={isNonMobile ? "row" : "column"}
-        justifyContent="space-between"
+        justifyContent="center" // Center horizontally
         color="white"
-        alignItems="center"
+        alignItems={isNonMobile ? "center" : "initial"} //
         width={isNonMobile ? "50%" : "100%"}
         padding="5px"
         borderRadius="1px"
         textAlign="left"
         position="absolute"
-        top={isNonMobile ? "40%" : "100px"} // Top margin adjustment for mobile
+        top={isNonMobile ? "40%" : "220px"} // Top margin adjustment for mobile
         right={isNonMobile ? undefined : "0"}
+        left={isNonMobile ? "25%" : "50px"}
         margin={isNonMobile ? undefined : "0 auto"}
         maxWidth={isNonMobile ? undefined : "250px"}
         sx={{
@@ -108,14 +110,17 @@ const MainCarousel = () => {
 
         {/* Box 2 (Buy) */}
         <Box
-          width="100%"
-          padding={isNonMobile ? "100px" : "20px"} // Adjusted padding for mobile
-          borderRadius="5px"
-          background={isNonMobile ? "red" : "yellow"} // New background for mobile
-          borderRight={isNonMobile ? "3px solid white" : "0"}
-        >
-          <Typography variant="h1">Buy</Typography>
-        </Box>
+      width="100%"
+      padding={isNonMobile ? "100px" : "20px"}
+      borderRadius="5px"
+      background={isNonMobile ? "red" : "yellow"}
+      borderRight={isNonMobile ? "3px solid white" : "0"}
+    >
+      {/* Anchor tag to redirect to ShoppingList.jsx */}
+      <a href="#recommendedItemsSection" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Typography variant="h1">Buy</Typography>
+      </a>
+    </Box>
 
         {/* Box 3 (Sell) */}
         <Box
