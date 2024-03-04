@@ -101,7 +101,7 @@ const ProductForm = () => {
       formData.append('watchCondition', watchCondition);
       formData.append('watchPhoto', watchPhoto); 
 
-      const response = await fetch('http://localhost:3500/api/products', {
+      const response = await fetch('https://watchupshop-api.onrender.com/api/products', {
         method: 'POST',
         body: formData,
       });
