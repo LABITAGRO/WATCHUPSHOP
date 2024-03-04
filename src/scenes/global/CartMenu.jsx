@@ -1,3 +1,4 @@
+import React from "react";
 import { Box, Button, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
@@ -140,9 +141,10 @@ const CartMenu = () => {
               px="5px"
             >
               <Typography fontWeight="bold">SUBTOTAL</Typography>
-              <Typography fontWeight="bold">#{totalPrice}</Typography>
+              <Typography fontWeight="bold">{totalPrice}</Typography>
             </FlexBox>
             <Button
+              disabled={cart.length === 0} // Disable button when cart is empty
               sx={{
                 backgroundColor: '#606060',
                 color: "white",

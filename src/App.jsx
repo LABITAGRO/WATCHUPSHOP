@@ -26,6 +26,7 @@ import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 import { ColorModeContext, useMode } from "./theme2";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import LoginSignup from './scenes/global/LoginSignup';
 
 
 
@@ -55,6 +56,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="item/:itemId" element={<ItemDetails />} />
+              <Route path="/login-signup" element={<LoginSignup />} />
               <Route path="checkout" element={<Checkout />} />
               <Route path="checkout/success" element={<Confirmation />} />
             </Routes>

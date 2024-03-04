@@ -75,6 +75,7 @@ function Navbar() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const [navbar, setNavbar] = useState(false);
+  const [welcomeMessage, setWelcomeMessage] = useState("");
 
   const scrollHeader = () => {
     window.scrollY >= 300 ? setNavbar(true) : setNavbar(false);
@@ -88,7 +89,62 @@ function Navbar() {
 
   // const Navbar = ({ cart, handleAdminIconClick, dispatch, setIsCartOpen }) => {
     
+
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loginContent, setLoginContent] = useState(true)
   // }
+
+  const handleSubmitForm = async () => {
+
+    if (loginContent) {
+      // Handle the login logic and make a request to the backend here
+      try {
+        const response = await fetch("http://localhost:3500/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        })
+
+        if (response.ok) {
+          setWelcomeMessage("Welcome, User!"); 
+          handleLoginClose(); // Close the login modal
+          navigate('/');    // Redirect to Homepage
+        } else {
+          alert("Login failed")
+        }
+      } catch (error) {
+        console.error("Login error:", error)
+        alert("An error occurred during login")
+      }
+    } else {
+      // Handle signup logic and make a request to the backend here
+      try {
+        const response = await fetch("http://localhost:3500/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email, password }),
+        })
+
+        if (response.ok) {
+          alert("Signup successful")
+          setLoginContent(true) // Switch to login after successful signup
+        } else {
+          const errorData = await response.json() // Parse the error response from the server
+          console.error("Signup failed:", errorData.error)
+          alert("Signup failed: " + errorData.error)
+        }
+      } catch (error) {
+        console.error("Signup error:", error)
+        alert("An error occurred during signup")
+      }
+    }
+  }
 
   return (
     <>
@@ -310,33 +366,120 @@ function Navbar() {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      bgcolor: '#000', // Black background color
+      bgcolor: '#000', // Dark background color
       boxShadow: 24,
       p: 4,
-      width: "90%", // Adjusted for responsiveness
-      maxWidth: 400, // Adjusted for responsiveness
-      textAlign: 'center', // Center align the content
+      borderRadius: 2, // Add border radius for a rounded look
+      maxWidth: 400,
+      width: '90%',
+      textAlign: 'center',
     }}
   >
-    <Typography variant="h4" sx={{ fontSize: '48px', color: '#fff', mb: 2 }}>
+    <Typography variant="h4" sx={{ fontSize: '48px', color: '#FFD600', mb: 2 }}>
       Watchupshop
     </Typography>
-    <TextField id="username" label="Username" fullWidth variant="outlined" sx={{ mb: 2 }} />
-    <TextField id="password" label="Password" type="password" fullWidth variant="outlined" sx={{ mb: 2 }} />
-    <FormControlLabel
-      control={<Checkbox defaultChecked color="primary" />}
-      label="Remember me"
-      sx={{ color: '#fff' }} // White text color
-    />
-    <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-      Login
+    {loginContent && (
+      <>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            id="username"
+            label="Username"
+            fullWidth
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            InputProps={{
+              style: { color: '#FFF' }, // White text color
+            }}
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              style: { color: '#FFF' }, // White text color
+            }}
+          />
+        </Box>
+      </>
+    )}
+    {!loginContent && (
+      <>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            id="name"
+            label="Name"
+            fullWidth
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            InputProps={{
+              style: { color: '#FFF' }, // White text color
+            }}
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+            variant="outlined"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            InputProps={{
+              style: { color: '#FFF' }, // White text color
+            }}
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            fullWidth
+            variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            InputProps={{
+              style: { color: '#FFF' }, // White text color
+            }}
+          />
+        </Box>
+      </>
+    )}
+    <Button
+      variant="contained"
+      color="primary"
+      fullWidth
+      sx={{ mb: 2 }}
+      onClick={handleSubmitForm}
+    >
+      {loginContent ? 'LOGIN' : 'SIGNUP'}
     </Button>
-    {/* <Button variant="outlined" color="primary" fullWidth sx={{ mt: 2 }}>
-      Register
-    </Button> */}
-     <RegisterModal />
+    <Typography variant="body2" sx={{ color: '#FFF', mb: 2 }}>
+      {loginContent ? "Don't have an Account?" : "Already have an account?"}
+    </Typography>
+    <Button
+      id="toggleLoginFormBtn"
+      variant="outlined"
+      color="primary"
+      fullWidth
+      onClick={() => setLoginContent(!loginContent)}
+    >
+      {loginContent ? 'Create new account' : 'Login'}
+    </Button>
   </Box>
 </Modal>
+
+
+
 
 
      

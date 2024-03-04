@@ -32,6 +32,7 @@ const topWatchBrands = [
   'Zenith',
 ];
 
+
 const ExchangeForm = () => {
   const [productName, setProductName] = useState('');
   const [watchType, setWatchType] = useState('');
@@ -41,8 +42,8 @@ const ExchangeForm = () => {
   const [otherBrand, setOtherBrand] = useState('');
   const [watchCondition, setWatchCondition] = useState('');
   const [watchPhoto, setWatchPhoto] = useState(null);
-  const [formSubmitted, setFormSubmitted] = useState(false); 
-  
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showFillAllDetails, setShowFillAllDetails] = useState(false);
 
   const handleProductNameChange = (event) => {
     setProductName(event.target.value);
@@ -82,6 +83,11 @@ const ExchangeForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!productName || !watchType || !watchYear || !watchBrand || !watchCondition || !watchPhoto) {
+      setShowFillAllDetails(true);
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:3500/api/exchangerequests', {
         method: 'POST',
@@ -98,19 +104,12 @@ const ExchangeForm = () => {
         }),
       });
 
-      //  // Set formSubmitted to true after successful submission
-       setFormSubmitted(true);
-  
+      setFormSubmitted(true);
+
       if (!response.ok) {
         throw new Error('Failed to submit exchange request');
       }
-  
-      // const result = await response.json();
-      // console.log(result);
 
-      
-  
-      // Reset the form after submission
       setProductName('');
       setWatchType('');
       setWatchYear('');
@@ -123,21 +122,22 @@ const ExchangeForm = () => {
       console.error('Error submitting exchange request:', error);
     }
   };
-  
-  return (
-    <Box>
-      <Typography variant="h4">Exchange Your Watch</Typography>
 
-      {/* Conditional rendering based on formSubmitted state */}
+  return (
+    // sx={{ backgroundColor: '#000', padding: '20px' }}
+    <Box   > 
+      <Typography variant="h4" color="white" mb={3}>
+        Exchange Your Watch
+      </Typography>
+
       {formSubmitted ? (
         <Alert severity="success" style={{ marginTop: '20px' }}>
           Thank you for your submission!
         </Alert>
       ) : (
-     
         <form>
           <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-            <InputLabel>Watch Type</InputLabel>
+            <InputLabel sx={{ color: 'white' }}>Watch Type</InputLabel>
             <Select
               value={watchType}
               onChange={handleWatchTypeChange}
@@ -146,10 +146,8 @@ const ExchangeForm = () => {
               <MenuItem value="analog">Analog</MenuItem>
               <MenuItem value="digital">Digital</MenuItem>
               <MenuItem value="smart">Smart Watch</MenuItem>
-              <MenuItem value="smart">Automatic Watch</MenuItem>
-              <MenuItem value="smart">Mechanical Watch</MenuItem>
-              
-              {/* Add more watch type options as needed */}
+              <MenuItem value="automatic">Automatic Watch</MenuItem>
+              <MenuItem value="mechanical">Mechanical Watch</MenuItem>
             </Select>
           </FormControl>
 
@@ -161,10 +159,11 @@ const ExchangeForm = () => {
             onChange={handleWatchYearChange}
             margin="normal"
             style={{ marginTop: '20px' }}
+            sx={{ color: 'white' }}
           />
 
           <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-            <InputLabel>Watch Brand</InputLabel>
+            <InputLabel sx={{ color: 'white' }}>Watch Brand</InputLabel>
             <Select
               value={watchBrand}
               onChange={handleWatchBrandChange}
@@ -187,6 +186,7 @@ const ExchangeForm = () => {
             onChange={handleProductNameChange}
             margin="normal"
             style={{ marginTop: '20px' }}
+            sx={{ color: 'white' }}
           />
 
           {showOtherBrand && (
@@ -198,23 +198,23 @@ const ExchangeForm = () => {
               onChange={handleOtherBrandChange}
               margin="normal"
               style={{ marginTop: '10px' }}
+              sx={{ color: 'white' }}
             />
           )}
 
           <FormControl variant="outlined" fullWidth style={{ marginTop: '20px' }}>
-            <InputLabel>Watch Condition</InputLabel>
+            <InputLabel sx={{ color: 'white' }}>Watch Condition</InputLabel>
             <Select
               value={watchCondition}
               onChange={handleWatchConditionChange}
               label="Watch Condition"
             >
-              {/* <MenuItem value="new">New</MenuItem> */}
               <MenuItem value="used">Used</MenuItem>
               <MenuItem value="likeNew">Like New</MenuItem>
-              <MenuItem value="likeNew">Few Scratch</MenuItem>
-              <MenuItem value="likeNew">Partially Screen Broken</MenuItem>
-              <MenuItem value="likeNew">Need a repair</MenuItem>
-              <MenuItem value="likeNew">Battery Issue</MenuItem>
+              <MenuItem value="fewScratches">Few Scratches</MenuItem>
+              <MenuItem value="partiallyBroken">Partially Broken</MenuItem>
+              <MenuItem value="needsRepair">Needs Repair</MenuItem>
+              <MenuItem value="batteryIssue">Battery Issue</MenuItem>
             </Select>
           </FormControl>
 
@@ -222,28 +222,28 @@ const ExchangeForm = () => {
             type="file"
             accept="image/*"
             onChange={handleWatchPhotoChange}
-            style={{ marginTop: '20px' }}
+            style={{ marginTop: '20px', color: 'white' }}
           />
 
-          {/* Submit for Inspection Button */}
+          {showFillAllDetails && (
+            <Alert severity="error" style={{ marginTop: '20px' }}>
+              Please fill in all details before submitting.
+            </Alert>
+          )}
+
           <Button
             variant="contained"
             color="primary"
             onClick={handleSubmit}
             style={{ marginTop: '20px' }}
           >
-            Submit 
+            Submit
           </Button>
 
-          {/* Message below the button */}
-          <Typography variant="body2" style={{ marginTop: '10px' }}>
+          <Typography variant="body2" style={{ marginTop: '10px', color: 'white' }}>
             We will get back to you in 2 working days regarding the best price for your watch and exchange options.
           </Typography>
         </form>
-      
-        
-        
-        
       )}
     </Box>
   );

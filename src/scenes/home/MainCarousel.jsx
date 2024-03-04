@@ -11,6 +11,8 @@ import ProductForm from './ProductForm';
 import DonateForm from './DonateForm'
 import ExchangeForm from './ExchangeForm';
 import ShoppingList from './ShoppingList'; // Import the ShoppingList component
+import kkImage from '../../scenes/global/kk.jpg'; 
+
 
 const MainCarousel = () => {
   const theme = useTheme();
@@ -29,6 +31,7 @@ const MainCarousel = () => {
   const [openSellDialog, setOpenSellDialog] = useState(false);
   const [openDonateDialog, setOpenDonateDialog] = useState(false);
   const [openExchangeDialog, setOpenExchangeDialog] = useState(false);
+  const [openPopup, setOpenPopup] = useState(true);
 
   const handleOpenSellDialog = () => {
     setOpenSellDialog(true);
@@ -54,9 +57,66 @@ const MainCarousel = () => {
     setOpenExchangeDialog(false);
   };
 
+  const handleClosePopup = () => {
+    setOpenPopup(false);
+  };
+
+  const handleImageClick = () => {
+    handleClosePopup(); // Call handleClosePopup function to close the dialog window
+  };
   return (
     <Box>
       <Box className="images"></Box>
+
+      {openPopup && (
+      <Dialog open={openPopup} onClose={handleClosePopup} PaperProps={{ style: { backgroundColor: '#000' } }}>
+        <DialogContent>
+        <Typography variant="h3" style={{ color: 'white', textAlign: 'center' }}>
+           -: Welcome :-
+          </Typography>
+          <br/>
+          <hr style={{ backgroundColor: 'gold', height: '1px', border: 'none' }} />
+          <br/>
+          <Typography variant="h1" style={{ color: 'white', textAlign: 'center' }}>
+            WatchUpShop
+          </Typography>
+          <Typography variant="h3" style={{ color: 'white', textAlign: 'center' }}>
+            is in
+            <br />
+            Testing phase
+          </Typography>
+          <br/>
+          <hr style={{ backgroundColor: 'gold', height: '1px', border: 'none' }} />
+          <br/>
+          <Typography variant="h6" style={{ color: 'white', textAlign: 'center' }}>
+            Developed by:
+          </Typography>
+          <Box display="flex" justifyContent="center" alignItems="center" height="auto" marginTop={2} style={{ position: 'relative' }}>
+            <div
+              style={{
+                width: '90vw', // 90% of the viewport width
+                maxWidth: '350px', // Maximum width of 350px
+                height: '50vh', // 50% of the viewport height
+                maxHeight: '120px', // Maximum height of 120px
+                cursor: 'pointer',
+                backgroundImage: `url(${kkImage})`, // Use background-image CSS property
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+          </Box>
+          <Box display="flex" justifyContent="center" marginTop={4}>
+            <Button variant="contained" color="primary" onClick={handleClosePopup}>Okay</Button>
+          </Box>
+          
+          <Typography variant="body2" style={{ color: 'white', textAlign: 'center', fontSize: '9px', marginTop: '20px' }}>
+            For Queries reach us at: interlink.bitta@gmail.com
+            <br />
+            Get in touch +91 93982 16337
+          </Typography>
+        </DialogContent>
+      </Dialog>
+    )}
 
       <Box
         ref={el => { imgItem = el }}
@@ -86,6 +146,9 @@ const MainCarousel = () => {
           borderRadius="5px"
           background={isNonMobile ? "blue" : "green"} // New background for mobile
           borderRight={isNonMobile ? "3px solid white" : "0"}
+          
+
+          
         >
           <Typography
             variant="h1"

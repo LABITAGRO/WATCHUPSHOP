@@ -8,6 +8,7 @@ import {
     Twitter,
     Bolt
 } from '@mui/icons-material';
+import kkImage from '../../scenes/global/kk.jpg'; 
 
 const Footer = () => {
     const theme = useTheme();
@@ -182,7 +183,7 @@ href="https://www.instagram.com/watchupshop1/?igsh=dDk2NDhtNnp4eTFk"
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                ><Bolt fontSize="small" /> Developed By Labit Agro Private Limited</Box>
+                ><Bolt fontSize="small" /> Developed By Interlink</Box>
                 <Box
                     display="flex"
                     alignItems="center"
@@ -190,6 +191,14 @@ href="https://www.instagram.com/watchupshop1/?igsh=dDk2NDhtNnp4eTFk"
                 ><Bolt fontSize="small" />| +91 93982 16337 |Copyright © |All Rights Reserved.</Box>
                 
             </Box>
+            {/* Logo Box */}
+            <Box
+      display="flex"
+      justifyContent="center"
+      mt="10px" // Adjust this margin as needed
+    >
+      <img src={kkImage} alt="" style={{ width: '18%' }}/> {/* Using the imported image */}
+    </Box>
         </Box >
     );
 };

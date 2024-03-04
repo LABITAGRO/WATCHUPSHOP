@@ -23,6 +23,7 @@ const Subscribe = () => {
             width: "0px",
             height: "0px",
             color: "#151515",
+            
           }}
         >
           <MarkEmailReadOutlinedIcon fontSize="large" />

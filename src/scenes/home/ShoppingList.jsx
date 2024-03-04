@@ -8,6 +8,8 @@ import { Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions }
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme2";
+import { addToCart } from "../../state";
+import { useDispatch } from "react-redux"; 
 
 const ShoppingList = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +20,8 @@ const ShoppingList = () => {
   const breakPoint = useMediaQuery("(min-width:769px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+  const dispatch = useDispatch();
+ const [count, setCount] = useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -93,9 +96,18 @@ const ShoppingList = () => {
     },
   ];
   
+  const handleCloseDialog = () => {
+    setSelectedItem(null);
+  };
   
+  const handleAddToCart = () => {
+    if (selectedItem) {
+      // Dispatch addToCart action to add the item to the cart
+      dispatch(addToCart({ item: { ...selectedItem, count } }));
+      setSelectedItem(null); // Reset selectedItem after adding to cart
+    }
+  };
 
-  // Randomly selecting products for one category
   const recommendedItems = sampleData.filter((item) => item.category === "Recommended");
   const randomRecommendedItem = recommendedItems[Math.floor(Math.random() * recommendedItems.length)];
 
@@ -103,10 +115,6 @@ const ShoppingList = () => {
 
   const handleOpenDialog = (item) => {
     setSelectedItem(item);
-  };
-
-  const handleCloseDialog = () => {
-    setSelectedItem(null);
   };
 
   const renderItems = () => {
@@ -119,9 +127,8 @@ const ShoppingList = () => {
     return (
       <Box
         display="grid"
-        gridTemplateColumns="repeat(auto-fill, minmax(250px, 1fr))"
+        gridTemplateColumns={`repeat(${breakPoint ? "3" : "1"}, 1fr)`} // Adjust here
         gap="20px"
-
         sx={{
           m: "25px",
           "& .MuiTabs-flexContainer": {
@@ -132,9 +139,6 @@ const ShoppingList = () => {
             fontSize: breakPoint ? "0.8rem" : "0.52rem",
           },
         }}
-
-       
-        
       >
         {itemsToRender.map((item) => (
           <Box key={item.id} onClick={() => handleOpenDialog(item)}>
@@ -217,9 +221,13 @@ const ShoppingList = () => {
           <Button variant="contained" color="primary" onClick={handleCloseDialog}>
             Close
           </Button>
-          <Button variant="contained" style={{ backgroundColor: "yellow", color: "black" }} onClick={handleCloseDialog}>
-            Add to Cart
-          </Button>
+          <Button
+  variant="contained"
+  style={{ backgroundColor: "yellow", color: "black" }}
+  onClick={handleAddToCart}
+>
+  Add to Cart
+</Button>
         </DialogActions>
       </Dialog>
     </Box>

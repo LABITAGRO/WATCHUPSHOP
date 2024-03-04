@@ -1,7 +1,6 @@
-import { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { IconButton, Box, Typography, useTheme, Button, useMediaQuery } from "@mui/material";
-import { Add, Remove, Favorite } from "@mui/icons-material";
+import { Box, Typography, Button, useTheme, useMediaQuery } from "@mui/material";
 import { addToCart } from "../state";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../theme2";
@@ -12,134 +11,76 @@ const Item = ({ item, width }) => {
   const smobilePoint = useMediaQuery("(max-width:370px)");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [count, setCount] = useState(1);
-  const [isHovered, setIsHovered] = useState(false);
-  const [like, setLike] = useState(false);
-  const {
-    palette: { neutral },
-  } = useTheme();
 
-  // Dstructure params from attributes 
-  const { category, price, name, imageUrl} = item;
-
-  let fLCapital = s => s = s.charAt(0).toUpperCase() + s.slice(1);
+  const handleAddToCart = () => {
+    dispatch(addToCart({ item }));
+  };
 
   return (
     <Box width={width} mb="2px">
       <Box
         position="relative"
-        onMouseOver={() => setIsHovered(true)}
-        onMouseOut={() => setIsHovered(false)}
         backgroundColor={colors.primary[300]}
         width={smobilePoint ? "280px" : "300px"}
         height="350px"
         display="flex"
         justifyContent="center"
         alignItems="center"
+        sx={{
+          transition: "transform 0.2s ease-in-out", // Apply transition CSS using sx prop
+          "&:hover": { transform: "scale(1.05)" }, // Scale effect on hover
+        }}
       >
+        {/* Item image */}
         <img
           alt={item.name}
           width="200px"
           height="290px"
-          src={imageUrl}
+          src={item.imageUrl}
           onDoubleClick={() => navigate(`/item/${item.id}`)}
           style={{ cursor: "pointer", objectFit: "contain" }}
         />
-        {/* counter and likes */}
+        {/* Add to cart */}
         <Box
-          display={isHovered ? "block" : "none"}
-          position="absolute"
-          top="3%"
-          left="0"
-          width="100%"
-          padding="0 5%"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box
-              display="flex"
-              alignItems="center"
-              backgroundColor={colors.primary[600]}
-              borderRadius="3px"
-              // width="40px"
-              height="30px"
-            >
-              <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
-                <Remove />
-              </IconButton>
-              <Typography mt="3px" color={colors.blueAccent[800]}>{count}</Typography>
-              <IconButton onClick={() => setCount(count + 1)}>
-                <Add />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="center"
-              onClick={() => setLike(!like)}
-              color={like ? "#d63219" : "#272e32"}
-              backgroundColor={colors.secondary[900]}
-              sx={{
-                cursor: "pointer",
-              }}
-              borderRadius="3px"
-              width="40px"
-              height="30px"
-            >
-              <Favorite
-                sx={{
-                  fontSize: "32px",
-                  padding: "2px"
-                }}
-              />
-            </Box>
-          </Box>
-        </Box>
-        {/* add to cart  */}
-        <Box
-          display={isHovered ? "block" : "none"}
+          display="flex"
+          justifyContent="center"
           position="absolute"
           bottom="3%"
           left="0"
           width="100%"
-          padding="0 15%"
+          padding="1%"
         >
-          <Box display="flex" justifyContent="center">
-            <Button
-              onClick={() => {
-                dispatch(addToCart({ item: { ...item, count } }));
-              }}
-              sx={{
-                backgroundColor: colors.yellowAccent[700],
-                color: "#fbfbfe",
-                fontWeight: "bold",
-                "&:hover": { backgroundColor: colors.yellowAccent[700] },
-              }}
-            >
-              Add to Cart
-            </Button>
-          </Box>
+          <Button
+            size="small"
+            onClick={handleAddToCart}
+            sx={{
+              backgroundColor: colors.yellowAccent[700],
+              color: "#fbfbfe",
+              fontWeight: "bold",
+              "&:hover": { backgroundColor: colors.yellowAccent[800] },
+            }}
+          >
+            Add to Cart
+          </Button>
         </Box>
       </Box>
+      {/* Item details */}
       <Box mt="3px">
         <Typography variant="subtitle2" color={colors.primary[100]}>
-          {fLCapital(`${category}`)}
+          {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
         </Typography>
-        <Typography
-          color={colors.primary[100]}
-          fontWeight="bold">#{price}</Typography>
+        <Typography color={colors.primary[100]} fontWeight="bold">
+          #{item.price}
+        </Typography>
         <Typography
           onClick={() => navigate(`/item/${item.id}`)}
           variant="h5"
           color={colors.primary[100]}
           pb="3px"
-          sx={{
-            "&:hover": { color: "#c36303", cursor: "pointer" },
-            transition: ".3s",
-          }}
-        >{name}</Typography>
+          sx={{ "&:hover": { color: "#c36303", cursor: "pointer" }, transition: ".3s" }}
+        >
+          {item.name}
+        </Typography>
       </Box>
     </Box>
   );

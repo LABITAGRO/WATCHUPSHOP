@@ -59,7 +59,8 @@ const DonateForm = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
   const [showOtherBrand, setShowOtherBrand] = useState(false);
   const [otherBrand, setOtherBrand] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false); 
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [showFillAllDetails, setShowFillAllDetails] = useState(false); // New state
 
   const handleDonationTypeChange = (event) => {
     setDonationType(event.target.value);
@@ -121,14 +122,19 @@ const DonateForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!donationType || !donorName || !selectedCause || !selectedOrganization || !selectedWatchType || !watchYear || !selectedBrand || (selectedBrand === 'Other' && !otherBrand) || !donorPhoto) {
+      setShowFillAllDetails(true);
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('donationType', donationType);
       formData.append('donationAmount', donationAmount);
       formData.append('donorName', donorName);
       formData.append('donorPhoto', donorPhoto);
-      formData.append('selectedCause', selectedCause); // Corrected field name
-      formData.append('selectedOrganization', selectedOrganization); // Corrected field name
+      formData.append('selectedCause', selectedCause);
+      formData.append('selectedOrganization', selectedOrganization);
       formData.append('percentage', percentage);
       formData.append('productName', productName);
       formData.append('selectedWatchType', selectedWatchType);
@@ -338,6 +344,13 @@ const DonateForm = () => {
             onChange={handleDonorPhotoChange}
             style={{ marginTop: '20px' }}
           />
+
+          {/* New code added here */}
+          {showFillAllDetails && (
+            <Alert severity="error" style={{ marginTop: '20px' }}>
+              Please fill in all details before submitting.
+            </Alert>
+          )}
 
           <Button
             variant="contained"
