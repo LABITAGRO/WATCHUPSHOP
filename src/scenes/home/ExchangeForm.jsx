@@ -89,7 +89,7 @@ const ExchangeForm = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3500/api/exchangerequests', {
+      const response = await fetch('https://watchupshop-api.onrender.com/api/exchangerequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
