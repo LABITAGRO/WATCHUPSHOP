@@ -101,7 +101,7 @@ function Navbar() {
     if (loginContent) {
       // Handle the login logic and make a request to the backend here
       try {
-        const response = await fetch("http://localhost:3500/login", {
+        const response = await fetch("https://watchupshop-api.onrender.com/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -123,7 +123,7 @@ function Navbar() {
     } else {
       // Handle signup logic and make a request to the backend here
       try {
-        const response = await fetch("http://localhost:3500/signup", {
+        const response = await fetch("https://watchupshop-api.onrender.com/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
